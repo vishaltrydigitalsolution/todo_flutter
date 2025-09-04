@@ -5,6 +5,7 @@ import 'package:todo/pages/routes/app_routes.dart';
 
 class TaskRegisterPage extends StatelessWidget {
   TaskRegisterPage({super.key});
+ // _TaskRegisterPageState createState()=>_TaskRegisterPageState();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController detailController = TextEditingController();
@@ -74,9 +75,7 @@ class TaskRegisterPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Enter your detail')),
-                    );
+
                   }
                   if (nameController.text.isNotEmpty &&
                       detailController.text.isNotEmpty) {
@@ -98,3 +97,4 @@ class TaskRegisterPage extends StatelessWidget {
     );
   }
 }
+

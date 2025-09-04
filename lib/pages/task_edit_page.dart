@@ -43,7 +43,9 @@ class _TaskEditPageState extends State<TaskEditPage> {
               onPressed: () {
                 itemToEdit.name = _nameController.text;
                 itemToEdit.detail = _detailController.text;
+
                 Get.back(result: itemToEdit);
+
               },
               child: Text('Save Changes'),
             ),

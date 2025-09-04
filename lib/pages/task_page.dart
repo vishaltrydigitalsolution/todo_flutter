@@ -5,12 +5,14 @@ import 'package:todo/pages/controller/task_controller.dart';
 import 'package:todo/pages/models/task_models.dart';
 import 'package:todo/pages/routes/app_routes.dart';
 import 'package:todo/pages/task_edit_page.dart';
+
 class TaskPage extends StatelessWidget {
   TaskPage({super.key});
   final TextEditingController nameController = TextEditingController();
   final TextEditingController detailController = TextEditingController();
 
   final TaskController taskController = Get.find<TaskController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +46,13 @@ class TaskPage extends StatelessWidget {
                   ),
                   SlidableAction(
                     onPressed: (context) async {
-                     // Get.to(()=>TaskEditPage(),arguments: task);
-                      final updateTask= await Get.to(()=>TaskEditPage(),arguments: task);
-                      if(updateTask!=null&&updateTask is Task) {}
+                      //taskController.upDateTasks(String,);
+                      // Get.to(()=>TaskEditPage(),arguments: task);
+                      final updateTask = await Get.to(
+                        () => TaskEditPage(),
+                        arguments: task,
+                      );
+                      if (updateTask!.isNull && updateTask is Task) {}
                     },
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
