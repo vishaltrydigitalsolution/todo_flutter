@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:todo/pages/controller/task_controller.dart';
-import 'package:todo/pages/models/task_models.dart';
 import 'package:todo/pages/routes/app_routes.dart';
 import 'package:todo/pages/task_edit_page.dart';
 
@@ -52,7 +51,6 @@ class TaskPage extends StatelessWidget {
                         () => TaskEditPage(),
                         arguments: task,
                       );
-                      if (updateTask!.isNull && updateTask is Task) {}
                     },
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
@@ -64,8 +62,8 @@ class TaskPage extends StatelessWidget {
               child: Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
-                  title: Text(task.name),
-                  subtitle: Text(task.detail),
+                  title: Text(task.name??"N/a"),
+                  subtitle: Text(task.detail??"n/a"),
                 ),
               ),
             );
