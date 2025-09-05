@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
    // Get.put(TaskController());
     return GetMaterialApp(
+    // theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       title: 'Todo app',
       initialRoute: AppRoutes.TASK_PAGE,

@@ -1,42 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:todo/pages/controller/image_picker_controller.dart';
 import 'package:todo/pages/controller/task_controller.dart';
 import 'package:todo/pages/routes/app_routes.dart';
 
 class TaskRegisterPage extends StatelessWidget {
   TaskRegisterPage({super.key});
- // _TaskRegisterPageState createState()=>_TaskRegisterPageState();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController detailController = TextEditingController();
   final TextEditingController idController = TextEditingController();
   final TaskController taskController = Get.put(TaskController());
-
+  final ImagePickerController imageController = Get.put(
+    ImagePickerController(),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.TASK_PAGE);
-          },
-          icon: Icon(Icons.arrow_back, size: 32),
-        ),
         title: Text(
           'Task register Page',
           style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              imageController.pickImage(ImageSource.camera);
+            },
+            icon: Icon(Icons.camera),
+          ),
+          IconButton(
+            onPressed: () {
+              imageController.pickImage(ImageSource.gallery);
+            },
+            icon: Icon(Icons.photo),
+          ),
+        ],
         backgroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
+              Obx(
+                    () => CircleAvatar(
+                  radius: 80,
+                  backgroundColor: Colors.white,
+                  backgroundImage: imageController.pickedImageFile.value != null
+                      ? FileImage(imageController.pickedImageFile.value!)
+                      : null,
+                ),
+              ),
+              TextFormField(style: TextStyle(fontSize: 23),
                 controller: nameController,
                 decoration: InputDecoration(
                   icon: Icon(Icons.person),
@@ -48,13 +67,12 @@ class TaskRegisterPage extends StatelessWidget {
                   ),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                  }
+                  if (value == null || value.isEmpty) {}
                   return null;
                 },
               ),
               SizedBox(height: 20),
-              TextFormField(
+              TextFormField(style: TextStyle(fontSize: 23),
                 controller: detailController,
                 decoration: InputDecoration(
                   icon: Icon(Icons.details),
@@ -66,18 +84,14 @@ class TaskRegisterPage extends StatelessWidget {
                   ),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                  }
+                  if (value == null || value.isEmpty) {}
                   return null;
-
                 },
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-
-                  }
+                  if (_formKey.currentState!.validate()) {}
                   if (nameController.text.isNotEmpty &&
                       detailController.text.isNotEmpty) {
                     taskController.addTask(
@@ -91,6 +105,7 @@ class TaskRegisterPage extends StatelessWidget {
                 },
                 child: Text('Submit', style: TextStyle(fontSize: 20)),
               ),
+
             ],
           ),
         ),
@@ -98,4 +113,3 @@ class TaskRegisterPage extends StatelessWidget {
     );
   }
 }
-

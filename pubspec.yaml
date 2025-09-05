@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.7.2
   flutter_slidable: ^4.0.1
+  image_picker: ^1.2.0
+  camera: ^0.11.2
+  path_provider: ^2.1.5
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

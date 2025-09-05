@@ -23,6 +23,13 @@ class TaskPage extends StatelessWidget {
           style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
         ),
         backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            taskController.clearAll();
+          },
+          icon: Icon(Icons.clear_all,color: Colors.black,size: 30,),
+        ),
+
       ),
       body: Obx(
         () => ListView.builder(
@@ -44,13 +51,9 @@ class TaskPage extends StatelessWidget {
                     label: 'delete',
                   ),
                   SlidableAction(
-                    onPressed: (context) async {
+                    onPressed: (context) {
                       //taskController.upDateTasks(String,);
-                      // Get.to(()=>TaskEditPage(),arguments: task);
-                      final updateTask = await Get.to(
-                        () => TaskEditPage(),
-                        arguments: task,
-                      );
+                      Get.to(() => TaskEditPage(), arguments: task,);
                     },
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
@@ -60,21 +63,22 @@ class TaskPage extends StatelessWidget {
                 ],
               ),
               child: Card(
+                color: index.isEven?Colors.grey.shade200:Colors.white,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
-                  title: Text(task.name??"N/a"),
-                  subtitle: Text(task.detail??"n/a"),
+                  title: Text(task.name ?? "N/a"),
+                  subtitle: Text(task.detail ?? "n/a"),
                 ),
               ),
             );
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton( backgroundColor: Colors.black,
         onPressed: () {
           Get.toNamed(AppRoutes.TASK_REGISTRATION);
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: Colors.white,size: 30,),
       ),
     );
   }
