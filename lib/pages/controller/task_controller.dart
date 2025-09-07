@@ -1,27 +1,26 @@
 import 'package:get/get.dart';
 import '../models/task_models.dart';
+
 class TaskController extends GetxController {
-  RxList tasks = <Task>[].obs;
-  void addTask(  String name,String detail) {
-    tasks.add(Task(  name:name ,detail:detail));
-    tasks.refresh();
+  RxList<Task> tasks = <Task>[].obs;
+
+  void addTask(String name, String detail,  imagePath) {
+    tasks.add(Task(name: name, detail: detail, imagePath: imagePath));
   }
-void removeTasks( int index){
+
+  void removeTask(int index) {
     tasks.removeAt(index);
-    tasks.refresh();
-}
- editTasks( int index,String newName,String newDetail){
+  }
 
-      tasks[index].name = newName;
-      tasks[index].detail=newDetail;
-      tasks.refresh();
+  void editTask(int index, String newName, String newDetail ) {
+    tasks[index] = Task(
+      name: newName,
+      detail: newDetail,
+      imagePath: tasks[index].imagePath,
+    );
+  }
 
-}
-void clearAll(){
+  void clearAll() {
     tasks.clear();
-    tasks.refresh();
+  }
 }
-
-
-}
-

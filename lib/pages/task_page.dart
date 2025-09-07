@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -43,7 +45,7 @@ class TaskPage extends StatelessWidget {
                 children: [
                   SlidableAction(
                     onPressed: (context) {
-                      taskController.removeTasks(index);
+                      taskController.removeTask(index);
                     },
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
@@ -62,14 +64,38 @@ class TaskPage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Card(
-                color: index.isEven?Colors.grey.shade200:Colors.white,
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListTile(
-                  title: Text(task.name ?? "N/a"),
-                  subtitle: Text(task.detail ?? "n/a"),
+              child:  Card(
+            color: index.isEven ? Colors.grey.shade200 : Colors.white,
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(12),
+                title: Text(
+                  task.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (task.detail.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: Text(task.detail),
+                      ),
+                    if (task.imagePath != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Image.file(
+                          File(task.imagePath!),
+                          height: 120,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                  ],
                 ),
               ),
+            ),
+
             );
           },
         ),

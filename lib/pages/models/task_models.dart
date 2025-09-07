@@ -1,9 +1,11 @@
 class Task {
-  String ?name;
-  String? detail;
+  String name;
+  String detail;
+  String imagePath;
   Task({
-     this.name,
-     this.detail,
+      required this.name,
+    required this.detail,
+   required this.imagePath,
   });
 
 }

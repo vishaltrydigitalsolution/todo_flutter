@@ -97,9 +97,11 @@ class TaskRegisterPage extends StatelessWidget {
                     taskController.addTask(
                       nameController.text,
                       detailController.text,
+                      imageController.pickedImageFile.value?.path
                     );
                     nameController.clear();
                     detailController.clear();
+                    imageController.clearImage();
                     Get.toNamed(AppRoutes.TASK_PAGE);
                   }
                 },
