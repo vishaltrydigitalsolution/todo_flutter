@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:todo/pages/controller/image_picker_controller.dart';
 import 'package:todo/pages/controller/task_controller.dart';
 import 'package:todo/pages/routes/app_routes.dart';
-
 class TaskRegisterPage extends StatelessWidget {
   TaskRegisterPage({super.key});
   final _formKey = GlobalKey<FormState>();
@@ -66,10 +65,12 @@ class TaskRegisterPage extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {}
-                  return null;
-                },
+                validator: (value){
+                if(value == null || value.isEmpty){
+                  return 'please enter your name';
+                }
+                return null;
+                }
               ),
               SizedBox(height: 20),
               TextFormField(style: TextStyle(fontSize: 23),
@@ -91,18 +92,19 @@ class TaskRegisterPage extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
-                  if (nameController.text.isNotEmpty &&
-                      detailController.text.isNotEmpty) {
-                    taskController.addTask(
-                      nameController.text,
-                      detailController.text,
-                      imageController.pickedImageFile.value?.path
-                    );
-                    nameController.clear();
-                    detailController.clear();
-                    imageController.clearImage();
-                    Get.toNamed(AppRoutes.TASK_PAGE);
+                  if (_formKey.currentState!.validate()) {
+                    if (nameController.text.isNotEmpty &&
+                        detailController.text.isNotEmpty) {
+                      taskController.addTask(
+                          nameController.text,
+                          detailController.text,
+                          imageController.pickedImageFile.value?.path
+                      );
+                      nameController.clear();
+                      detailController.clear();
+                      imageController.clearImage();
+                      Get.toNamed(AppRoutes.TASK_PAGE);
+                    }
                   }
                 },
                 child: Text('Submit', style: TextStyle(fontSize: 20)),

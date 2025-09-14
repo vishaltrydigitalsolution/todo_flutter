@@ -7,5 +7,4 @@ class TaskBinding extends Bindings{
     Get.lazyPut<TaskController>(() => TaskController());
     Get.lazyPut<TaskRegisterController>(() => TaskRegisterController());
   }
-
 }

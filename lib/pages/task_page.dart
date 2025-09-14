@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -11,101 +10,139 @@ class TaskPage extends StatelessWidget {
   TaskPage({super.key});
   final TextEditingController nameController = TextEditingController();
   final TextEditingController detailController = TextEditingController();
-
   final TaskController taskController = Get.find<TaskController>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Task page',
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+         taskController.isMultiSelectionMode.value
+              ? '${taskController.tasks.where((task) => task.isSelected.value).length} selected page'
+              : 'Task page',
+          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
         ),
         backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            taskController.clearAll();
-          },
-          icon: Icon(Icons.clear_all,color: Colors.black,size: 30,),
-        ),
-
-      ),
-      body: Obx(
-        () => ListView.builder(
-          itemCount: taskController.tasks.length,
-          itemBuilder: (context, index) {
-            final task = taskController.tasks[index];
-            return Slidable(
-              key: ValueKey(task.name),
-              endActionPane: ActionPane(
-                motion: const DrawerMotion(),
-                children: [
-                  SlidableAction(
-                    onPressed: (context) {
-                      taskController.removeTask(index);
-                    },
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    icon: Icons.delete,
-                    label: 'delete',
-                  ),
-                  SlidableAction(
-                    onPressed: (context) {
-                      //taskController.upDateTasks(String,);
-                      Get.to(() => TaskEditPage(), arguments: task,);
-                    },
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    icon: Icons.edit,
-                    label: 'Edit',
-                  ),
-                ],
+        actions: [
+          if (taskController.isMultiSelectionMode.value)...[
+            if (taskController.hasSelectedTasks)
+              IconButton(
+                onPressed: () {
+                  taskController.deleteSelectedTasks();
+                },
+                icon: const Icon(Icons.delete, color: Colors.black),
               ),
-              child:  Card(
-            color: index.isEven ? Colors.grey.shade200 : Colors.white,
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(12),
-                title: Text(
-                  task.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (task.detail.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4.0),
-                        child: Text(task.detail),
-                      ),
-                    if (task.imagePath != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Image.file(
-                          File(task.imagePath!),
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                  ],
-                ),
+            const SizedBox(width: 10),
+            IconButton(
+              onPressed: () {
+                taskController.toggleSelectAll();
+              },
+              icon: Icon(
+                taskController.tasks.every((task) => task.isSelected.value)
+                    ? Icons.deselect
+                    : Icons.select_all,
+                color: Colors.black,
               ),
             ),
-
-            );
-          },
-        ),
+            IconButton(
+              onPressed: () {
+                taskController.clearSelection();
+              },
+              icon: const Icon(Icons.clear, color: Colors.black),
+            ),
+          ] else
+            IconButton(
+              onPressed: () {
+                taskController.toggleMultiSelectionMode();
+              },
+              icon: const Icon(Icons.select_all, color: Colors.black),
+            )
+        ],
       ),
-      floatingActionButton: FloatingActionButton( backgroundColor: Colors.black,
+      body: ListView.builder(
+        itemCount: taskController.tasks.length,
+        itemBuilder: (context, index) {
+          final task = taskController.tasks[index];
+          return Slidable(
+            key: ValueKey(task.name),
+            endActionPane: ActionPane(
+              motion: const DrawerMotion(),
+              children: [
+                SlidableAction(
+                  onPressed: (context) {
+                    taskController.removeTask(index);
+                  },
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  icon: Icons.delete,
+                  label: 'delete',
+                ),
+                SlidableAction(
+                  onPressed: (context) {
+                    Get.to(() => TaskEditPage(), arguments: task);
+                  },
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  icon: Icons.edit,
+                  label: 'Edit',
+                ),
+              ],
+            ),
+            child: Card(
+              color: index.isEven ? Colors.grey[200] : Colors.white,
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                title: Text(
+                  task.name,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                subtitle: Text(
+                  task.detail,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                trailing: taskController.isMultiSelectionMode.value
+                    ? Checkbox(
+                  value: task.isSelected.value,
+                  onChanged: (value) {
+                    taskController.taskSelect(task);
+                  },
+                )
+                    : null,
+                leading: task.imagePath != null
+                    ? Image.file(
+                  File(task.imagePath!),
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                )
+                    : null,
+              ),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
         onPressed: () {
           Get.toNamed(AppRoutes.TASK_REGISTRATION);
         },
-        child: Icon(Icons.add,color: Colors.white,size: 30,),
+        child:  const Icon(Icons.add, color: Colors.white, size: 30),
       ),
-    );
+    ));
   }
 }

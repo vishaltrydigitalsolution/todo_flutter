@@ -49,7 +49,6 @@ class TaskEditPage extends StatelessWidget {
                 Get.back(result: itemToEdit);
                 Get.find<TaskController>().tasks.refresh();
 
-
               },
               child: const Text('Save Changes'),
             ),
